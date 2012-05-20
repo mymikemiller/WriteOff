@@ -1,0 +1,17 @@
+Tutorial explaining how to use OAuth to log into google (including section on how to disable ARC (auto reference counting) for just the google related files)
+http://code.google.com/p/gtm-oauth2/wiki/Introduction
+
+
+Google account authentication code taken from this example:
+http://code.google.com/p/gtm-oauth2/source/browse/trunk/Examples/OAuth2SampleTouch/
+
+
+Building GData into an app:
+http://code.google.com/p/gdata-objectivec-client/wiki/BuildingTheLibrary
+http://hoishing.wordpress.com/2011/08/23/gdata-objective-c-client-setup-in-xcode-4/
+
+
+Google Developer API console (for allowing APIs in apps)
+https://code.google.com/apis/console/
+
+Example for google spreadsheets: http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m
