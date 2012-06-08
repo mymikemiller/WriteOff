@@ -15,3 +15,6 @@ Google Developer API console (for allowing APIs in apps)
 https://code.google.com/apis/console/
 
 Example for google spreadsheets: http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m
+
+Uploading docs (pictures):
+http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m uploadFileAtPath

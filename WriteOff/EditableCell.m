@@ -29,11 +29,6 @@
 
 @synthesize textField;
 
-- (void)dealloc {
-    self.textField = nil;
-    [super dealloc];
-}
-
 - (id)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
@@ -43,12 +38,17 @@
         self.textLabel.numberOfLines = 0;
         self.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
         
-        self.textField = [[[UITextField alloc] initWithFrame:CGRectZero] autorelease];
+        self.textField = [[UITextField alloc] initWithFrame:CGRectZero];
         self.textField.autoresizingMask = self.detailTextLabel.autoresizingMask;
         self.textField.font = [UIFont boldSystemFontOfSize:15.0];
         self.textField.textColor = self.detailTextLabel.textColor;
         self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.textField.clearButtonMode = UITextFieldViewModeWhileEditing; // show the clear 'x' button to the right
+        
+        /*
+        self.textLabel.backgroundColor = [UIColor yellowColor];
+
+        self.textField.backgroundColor = [UIColor redColor];*/
         [self.contentView addSubview:self.textField];
     }
     return self;

@@ -14,11 +14,17 @@
 		2732E50F153A006D0062F883 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2732E50E153A006D0062F883 /* main.m */; };
 		2732E513153A006D0062F883 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2732E512153A006D0062F883 /* AppDelegate.m */; };
 		2732E516153A006D0062F883 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2732E514153A006D0062F883 /* MainStoryboard_iPhone.storyboard */; };
-		2732E519153A006D0062F883 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2732E517153A006D0062F883 /* MainStoryboard_iPad.storyboard */; };
-		2732E51C153A006D0062F883 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2732E51B153A006D0062F883 /* ViewController.m */; };
+		2732E51C153A006D0062F883 /* AddRowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2732E51B153A006D0062F883 /* AddRowViewController.m */; };
 		2732E523153A02670062F883 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2732E522153A02670062F883 /* MobileCoreServices.framework */; };
 		2732E53F153A2D540062F883 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2732E53E153A2D540062F883 /* Security.framework */; };
 		2732E541153A2D610062F883 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2732E540153A2D610062F883 /* SystemConfiguration.framework */; };
+		27397CFB157AF8D400181367 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */; };
+		274BDA981581DF3100595D47 /* 86-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 274BDA971581DF3100595D47 /* 86-camera.png */; };
+		274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274BDA9A1581EFE400595D47 /* ImageCropViewController.m */; };
+		278F743D156F5E4600E20DA0 /* SpreadsheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */; };
+		278F7445156F5E5800E20DA0 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7444156F5E5800E20DA0 /* ImageManager.m */; };
+		278F7448156F601700E20DA0 /* GoogleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7447156F601700E20DA0 /* GoogleManager.m */; };
+		278F7ACA1573EFB500A0BFC9 /* SpreadsheetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7AC91573EFB500A0BFC9 /* SpreadsheetsViewController.m */; };
 		278FBC3A15682DDF005B751F /* EditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278FBC3915682DDF005B751F /* EditableCell.m */; };
 		2790919F1554622200E16C75 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2790919D155461C000E16C75 /* AssetsLibrary.framework */; };
 		279093061555CC9100E16C75 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 279092FC1555CC2000E16C75 /* libGDataTouchStaticLib.a */; };
@@ -83,12 +89,23 @@
 		2732E511153A006D0062F883 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2732E512153A006D0062F883 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2732E515153A006D0062F883 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
-		2732E518153A006D0062F883 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		2732E51A153A006D0062F883 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2732E51B153A006D0062F883 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2732E51A153A006D0062F883 /* AddRowViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddRowViewController.h; sourceTree = "<group>"; };
+		2732E51B153A006D0062F883 /* AddRowViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddRowViewController.m; sourceTree = "<group>"; };
 		2732E522153A02670062F883 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2732E53E153A2D540062F883 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2732E540153A2D610062F883 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = "../gdata-objectivec-client-read-only/Source/OAuth2/Touch/GTMOAuth2ViewTouch.xib"; sourceTree = "<group>"; };
+		274BDA971581DF3100595D47 /* 86-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "86-camera.png"; sourceTree = "<group>"; };
+		274BDA991581EFE400595D47 /* ImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCropViewController.h; sourceTree = "<group>"; };
+		274BDA9A1581EFE400595D47 /* ImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropViewController.m; sourceTree = "<group>"; };
+		278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetManager.h; sourceTree = "<group>"; };
+		278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpreadsheetManager.m; sourceTree = "<group>"; };
+		278F7443156F5E5800E20DA0 /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		278F7444156F5E5800E20DA0 /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		278F7446156F601700E20DA0 /* GoogleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleManager.h; sourceTree = "<group>"; };
+		278F7447156F601700E20DA0 /* GoogleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleManager.m; sourceTree = "<group>"; };
+		278F7AC81573EFB500A0BFC9 /* SpreadsheetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpreadsheetsViewController.h; path = ../SpreadsheetsViewController.h; sourceTree = "<group>"; };
+		278F7AC91573EFB500A0BFC9 /* SpreadsheetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpreadsheetsViewController.m; path = ../SpreadsheetsViewController.m; sourceTree = "<group>"; };
 		278FBC3815682DDF005B751F /* EditableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableCell.h; sourceTree = "<group>"; };
 		278FBC3915682DDF005B751F /* EditableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableCell.m; sourceTree = "<group>"; };
 		2790919D155461C000E16C75 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -462,6 +479,8 @@
 		2732E4F3153A006C0062F883 = {
 			isa = PBXGroup;
 			children = (
+				274BDA971581DF3100595D47 /* 86-camera.png */,
+				27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */,
 				279098E11555F1EE00E16C75 /* Headers */,
 				279092ED1555CC2000E16C75 /* GData.xcodeproj */,
 				2790919D155461C000E16C75 /* AssetsLibrary.framework */,
@@ -498,15 +517,24 @@
 		2732E508153A006D0062F883 /* WriteOff */ = {
 			isa = PBXGroup;
 			children = (
+				278F7AC81573EFB500A0BFC9 /* SpreadsheetsViewController.h */,
+				278F7AC91573EFB500A0BFC9 /* SpreadsheetsViewController.m */,
 				2732E511153A006D0062F883 /* AppDelegate.h */,
 				2732E512153A006D0062F883 /* AppDelegate.m */,
 				2732E514153A006D0062F883 /* MainStoryboard_iPhone.storyboard */,
-				2732E517153A006D0062F883 /* MainStoryboard_iPad.storyboard */,
-				2732E51A153A006D0062F883 /* ViewController.h */,
-				2732E51B153A006D0062F883 /* ViewController.m */,
+				2732E51A153A006D0062F883 /* AddRowViewController.h */,
+				2732E51B153A006D0062F883 /* AddRowViewController.m */,
+				274BDA991581EFE400595D47 /* ImageCropViewController.h */,
+				274BDA9A1581EFE400595D47 /* ImageCropViewController.m */,
 				2732E509153A006D0062F883 /* Supporting Files */,
 				278FBC3815682DDF005B751F /* EditableCell.h */,
 				278FBC3915682DDF005B751F /* EditableCell.m */,
+				278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */,
+				278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */,
+				278F7443156F5E5800E20DA0 /* ImageManager.h */,
+				278F7444156F5E5800E20DA0 /* ImageManager.m */,
+				278F7446156F601700E20DA0 /* GoogleManager.h */,
+				278F7447156F601700E20DA0 /* GoogleManager.m */,
 			);
 			path = WriteOff;
 			sourceTree = "<group>";
@@ -989,8 +1017,9 @@
 			files = (
 				2732E50D153A006D0062F883 /* InfoPlist.strings in Resources */,
 				2732E516153A006D0062F883 /* MainStoryboard_iPhone.storyboard in Resources */,
-				2732E519153A006D0062F883 /* MainStoryboard_iPad.storyboard in Resources */,
+				27397CFB157AF8D400181367 /* GTMOAuth2ViewTouch.xib in Resources */,
 				27D74A36153D336600B50997 /* notes in Resources */,
+				274BDA981581DF3100595D47 /* 86-camera.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1003,8 +1032,13 @@
 			files = (
 				2732E50F153A006D0062F883 /* main.m in Sources */,
 				2732E513153A006D0062F883 /* AppDelegate.m in Sources */,
-				2732E51C153A006D0062F883 /* ViewController.m in Sources */,
+				2732E51C153A006D0062F883 /* AddRowViewController.m in Sources */,
 				278FBC3A15682DDF005B751F /* EditableCell.m in Sources */,
+				278F743D156F5E4600E20DA0 /* SpreadsheetManager.m in Sources */,
+				278F7445156F5E5800E20DA0 /* ImageManager.m in Sources */,
+				278F7448156F601700E20DA0 /* GoogleManager.m in Sources */,
+				278F7ACA1573EFB500A0BFC9 /* SpreadsheetsViewController.m in Sources */,
+				274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,14 +1069,6 @@
 			name = MainStoryboard_iPhone.storyboard;
 			sourceTree = "<group>";
 		};
-		2732E517153A006D0062F883 /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2732E518153A006D0062F883 /* en */,
-			);
-			name = MainStoryboard_iPad.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1051,7 +1077,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1086,7 +1112,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1125,6 +1151,7 @@
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/GData-cwddezipvasjyofqjriestfdhwpo/Build/Products/Debug-universal\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1143,6 +1170,7 @@
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/GData-cwddezipvasjyofqjriestfdhwpo/Build/Products/Debug-universal\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
