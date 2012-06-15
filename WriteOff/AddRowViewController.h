@@ -11,10 +11,10 @@
 
 #import "GoogleManager.h"
 #import "SpreadsheetManager.h"
-
+#import "ImageCropViewController.h"
 
 @interface AddRowViewController : UIViewController
-<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
+<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, ImageCropViewControllerDelegate>
 {
     BOOL newMedia;
 }

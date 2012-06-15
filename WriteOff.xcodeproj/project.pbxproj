@@ -21,6 +21,8 @@
 		27397CFB157AF8D400181367 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */; };
 		274BDA981581DF3100595D47 /* 86-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 274BDA971581DF3100595D47 /* 86-camera.png */; };
 		274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274BDA9A1581EFE400595D47 /* ImageCropViewController.m */; };
+		275D3E171582864700B78809 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D3E161582864700B78809 /* TransparentToolbar.m */; };
+		275D3E281582D6E300B78809 /* CroppableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D3E271582D6E300B78809 /* CroppableImageView.m */; };
 		278F743D156F5E4600E20DA0 /* SpreadsheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */; };
 		278F7445156F5E5800E20DA0 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7444156F5E5800E20DA0 /* ImageManager.m */; };
 		278F7448156F601700E20DA0 /* GoogleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7447156F601700E20DA0 /* GoogleManager.m */; };
@@ -98,6 +100,10 @@
 		274BDA971581DF3100595D47 /* 86-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "86-camera.png"; sourceTree = "<group>"; };
 		274BDA991581EFE400595D47 /* ImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCropViewController.h; sourceTree = "<group>"; };
 		274BDA9A1581EFE400595D47 /* ImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropViewController.m; sourceTree = "<group>"; };
+		275D3E151582864700B78809 /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
+		275D3E161582864700B78809 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
+		275D3E261582D6E300B78809 /* CroppableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CroppableImageView.h; sourceTree = "<group>"; };
+		275D3E271582D6E300B78809 /* CroppableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CroppableImageView.m; sourceTree = "<group>"; };
 		278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetManager.h; sourceTree = "<group>"; };
 		278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpreadsheetManager.m; sourceTree = "<group>"; };
 		278F7443156F5E5800E20DA0 /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
@@ -527,6 +533,8 @@
 				274BDA991581EFE400595D47 /* ImageCropViewController.h */,
 				274BDA9A1581EFE400595D47 /* ImageCropViewController.m */,
 				2732E509153A006D0062F883 /* Supporting Files */,
+				275D3E261582D6E300B78809 /* CroppableImageView.h */,
+				275D3E271582D6E300B78809 /* CroppableImageView.m */,
 				278FBC3815682DDF005B751F /* EditableCell.h */,
 				278FBC3915682DDF005B751F /* EditableCell.m */,
 				278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */,
@@ -535,6 +543,8 @@
 				278F7444156F5E5800E20DA0 /* ImageManager.m */,
 				278F7446156F601700E20DA0 /* GoogleManager.h */,
 				278F7447156F601700E20DA0 /* GoogleManager.m */,
+				275D3E151582864700B78809 /* TransparentToolbar.h */,
+				275D3E161582864700B78809 /* TransparentToolbar.m */,
 			);
 			path = WriteOff;
 			sourceTree = "<group>";
@@ -1039,6 +1049,8 @@
 				278F7448156F601700E20DA0 /* GoogleManager.m in Sources */,
 				278F7ACA1573EFB500A0BFC9 /* SpreadsheetsViewController.m in Sources */,
 				274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */,
+				275D3E171582864700B78809 /* TransparentToolbar.m in Sources */,
+				275D3E281582D6E300B78809 /* CroppableImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

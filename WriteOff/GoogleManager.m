@@ -25,7 +25,10 @@ static NSString *const kClientSecretKey = @"eaTahaI9Wa0h0OFMHd-h48O6";// pre-ass
 
 
 
-@implementation GoogleManager
+@implementation GoogleManager {
+    // We re-declare this as an NSMutableArray here so we can manipulate it within this class. External classes see the immutable NSArray declared in the header.
+    NSMutableArray *_spreadsheets;
+}
 
 @synthesize auth = _auth;
 @synthesize spreadsheets = _spreadsheets;
@@ -344,8 +347,7 @@ didFinishSignInSelector:(SEL)finishedSignInSelector
         if (spreadsheet) {
             NSLog(@"Found doc %@", displayStr);
             // This should work. I should be able to do this, but it doesn't work... [(NSMutableArray *)_spreadsheets addObject:spreadsheet];
-            NSMutableArray *s = [self mutableArrayValueForKey:@"spreadsheets"];
-            [s addObject:spreadsheet];
+            [_spreadsheets addObject:spreadsheet];
         }
     }
     

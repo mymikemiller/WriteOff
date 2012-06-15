@@ -27,11 +27,15 @@
 
 #import "GoogleManager.h"
 
-@implementation SpreadsheetManager
+@implementation SpreadsheetManager {
+    // We re-declare this as an NSMutableArray here so we can manipulate it within this class. External classes see the immutable NSArray declared in the header.
+    NSMutableArray *_headerToValueMap;
+}
 
 @synthesize spreadsheet = _spreadsheet;
 @synthesize headerToValueMap = _headerToValueMap;
 @synthesize googleManager = _googleManager;
+@synthesize testing = _testing;
 
 - (id)initWithSpreadsheet:(GDataEntrySpreadsheetDoc *)theSpreadsheet
          andGoogleManager:(GoogleManager *)theGoogleManager
@@ -40,10 +44,12 @@
     if (self) {
         NSLog(@"setting spreadsheet");
         
+        
         self.spreadsheet = theSpreadsheet;
         self.googleManager = theGoogleManager;
         _headerToValueMap = [[NSMutableArray alloc] init];
     }
+    
     return self;
 }
 
@@ -214,7 +220,7 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
                     break;
                 }
                 NSMutableArray *headerToValue = [NSMutableArray arrayWithObjects:[cell inputString], @"DEBUG_TEXT", nil];
-                [[self mutableArrayValueForKey:@"headerToValueMap"] addObject:headerToValue];
+                [_headerToValueMap addObject:headerToValue];
             }
         }
     }

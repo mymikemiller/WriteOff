@@ -7,8 +7,13 @@
 //
 
 #import "ImageCropViewController.h"
+#import "CroppableImageView.h"
 
 @implementation ImageCropViewController
+@synthesize cancelButton;
+@synthesize doneButton;
+@synthesize delegate;
+@synthesize imageView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -17,6 +22,24 @@
         // Custom initialization
     }
     return self;
+}
+
+- (IBAction)cancel:(id)sender
+{
+	[self.delegate imageCropViewControllerDidCancel:self];
+}
+- (IBAction)done:(id)sender
+{
+	[self.delegate imageCropViewControllerDidSave:self];
+}
+
+- (void)setImage:(UIImage *)theImage {
+    NSLog(@"Setting image in ImageCropViewController");
+    [self.imageView setImage:theImage];
+}
+
+- (UIImage *)image {
+    return self.imageView.image;
 }
 
 - (void)didReceiveMemoryWarning
@@ -36,16 +59,22 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"viewDidLoad, so setting image");
+    
+    [self.imageView setImage:self.image];
 }
-*/
+
 
 - (void)viewDidUnload
 {
+    [self setCancelButton:nil];
+    [self setDoneButton:nil];
+    [self setImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

@@ -12,6 +12,9 @@
 #import "GDataEntrySpreadsheetDoc.h"
 #import "GTMOAuth2Authentication.h"
 
+#import <AssetsLibrary/ALAssetRepresentation.h>
+#import <AssetsLibrary/ALAsset.h>
+
 
 @implementation SpreadsheetsViewController
 
@@ -57,9 +60,61 @@
 		addRowViewController.spreadsheetManager = spreadsheetManager;
         NSLog(@"Setting googleManager on AddRowViewController");
         addRowViewController.googleManager = self.googleManager;
+	} else if ([segue.identifier isEqualToString:@"DebugCropImage"])
+	{
+        NSLog(@"Preparing for debug segue to Image Crop!");
+		ImageCropViewController *imageCropViewController = segue.destinationViewController;
+		imageCropViewController.delegate = self;
+        
+        
+        
+        NSLog(@"loading image from url");
+        
+        NSString *mediaurl = @"assets-library://asset/asset.JPG?id=0AD7ACF9-152F-43FD-A2B3-82538D831B45&ext=JPG";
+        
+        //
+        ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
+        {
+            ALAssetRepresentation *rep = [myasset defaultRepresentation];
+            CGImageRef iref = [rep fullResolutionImage];
+            
+            if (iref) {
+                NSLog(@"Image loaded. setting.");
+                UIImage *largeimage = [UIImage imageWithCGImage:iref];
+                //[largeimage retain];
+                imageCropViewController.image = largeimage;
+                
+            }
+        };
+        
+        //
+        ALAssetsLibraryAccessFailureBlock failureblock  = ^(NSError *myerror)
+        {
+            NSLog(@"booya, cant get image - %@",[myerror localizedDescription]);
+        };
+        
+        if(mediaurl && [mediaurl length])
+        {
+            NSURL *asseturl = [NSURL URLWithString:mediaurl];
+            ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+            [assetslibrary assetForURL:asseturl 
+                           resultBlock:resultblock
+                          failureBlock:failureblock];
+        }
+
+        
 	}
 }
 
+- (void)imageCropViewControllerDidCancel:(ImageCropViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imageCropViewControllerDidSave:(ImageCropViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 
@@ -115,9 +170,16 @@
     NSLog(@"viewDidAppear");
     if (!googleManager.auth.canAuthorize) {
         NSLog(@"View did appear, so signing in");
-        [googleManager signIn:self didFinishSignInSelector:@selector(didSignIn)];
+        //[googleManager signIn:self didFinishSignInSelector:@selector(didSignIn)];
+        
+        NSLog(@"Launching photo page");
+        [self performSegueWithIdentifier:@"DebugCropImage" sender:self];
+        
+        
     }
 }
+
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {

@@ -40,4 +40,6 @@
 @property (nonatomic, strong) GoogleManager *googleManager;
 @property (nonatomic, copy) NSArray *headerToValueMap; // See mHeaderToValueMap
 
+@property (nonatomic, copy) NSSet *testing;
+
 @end

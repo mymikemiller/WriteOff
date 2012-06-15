@@ -18,3 +18,6 @@ Example for google spreadsheets: http://gdata-objectivec-client.googlecode.com/s
 
 Uploading docs (pictures):
 http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m uploadFileAtPath
+
+Storyboards tutorial:
+http://www.raywenderlich.com/5191/beginning-storyboards-in-ios-5-part-2

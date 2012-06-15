@@ -15,7 +15,7 @@
 
 #import "EditableCell.h"
 #import "ImageManager.h"
-#import "ImageCropViewController.h"
+#import "TransparentToolbar.h"
 
 
 
@@ -237,7 +237,49 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    // Create the camera button (code from http://osmorphis.blogspot.com/2009/05/multiple-buttons-on-navigation-bar.html)
+    // create a toolbar to contain the button
+    TransparentToolbar* cameraToolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 64, 44)];
+    
+    // create the array to hold the buttons, which then gets added to the toolbar
+    NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    // create a standard "add" button
+    UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
+                           initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(photoButtonClicked)];
+    cameraButton.style = UIBarButtonItemStyleBordered;
+    
+    // Create a spacer
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [buttons addObject:spacer];
+    
+    
+    [buttons addObject:spacer];
+    [buttons addObject:cameraButton];
+    [buttons addObject:spacer];
+    
+    
+    // create a standard "refresh" button
+    //bi = [[UIBarButtonItem alloc]
+    //      initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+    //bi.style = UIBarButtonItemStyleBordered;
+    //[buttons addObject:bi];
+    
+    // stick the buttons in the toolbar
+    [cameraToolbar setItems:buttons animated:NO];
+    
+    [cameraToolbar setBackgroundColor:[UIColor clearColor]];
+    [cameraToolbar setTranslucent:TRUE];
+    
+    // and put the toolbar in the nav bar
+    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cameraToolbar];
+
+    self.navigationItem.titleView = cameraToolbar;
+    
+    
+    
     // Set the Camera icon
+    /*
     UIButton* titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleButton addTarget:self action:@selector(photoButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     titleButton.frame = CGRectMake(0, 0, 40, 40);
@@ -246,7 +288,7 @@
     UIImage *img = [UIImage imageNamed:@"86-camera.png"];
     [titleButton setImage:img forState:UIControlStateNormal];
     self.navigationItem.titleView = titleButton;
-    
+    */
     
     
     self.headersLoaded = false;
@@ -316,6 +358,32 @@
     
     [self performSegueWithIdentifier:@"CropImage" sender:self];
 }
+
+#pragma mark - ImageCropViewControllerDelegate
+
+- (void)imageCropViewControllerDidCancel:(ImageCropViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imageCropViewControllerDidSave:(ImageCropViewController *)controller
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	if ([segue.identifier isEqualToString:@"CropImage"])
+	{
+        NSLog(@"Preparing for segue!");
+		ImageCropViewController *imageCropViewController = segue.destinationViewController;
+		imageCropViewController.delegate = self;
+        imageCropViewController.image = self.imageView.image;
+	}
+}
+
+
+
 
 - (void)viewDidUnload
 {

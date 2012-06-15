@@ -10,7 +10,7 @@
 #import "GoogleManager.h"
 #import "AddRowViewController.h"
 
-@interface SpreadsheetsViewController : UITableViewController
+@interface SpreadsheetsViewController : UITableViewController <ImageCropViewControllerDelegate>
 
 
 @property (nonatomic, strong) GoogleManager *googleManager;
