@@ -10,6 +10,7 @@
 
 @class ImageCropViewController;
 @class CroppableImageView;
+@class CroppableImage;
 
 @protocol ImageCropViewControllerDelegate <NSObject>
 - (void)imageCropViewControllerDidCancel:
@@ -22,8 +23,8 @@
 
 @property (nonatomic, weak) id <ImageCropViewControllerDelegate> delegate;
 
-@property (weak, nonatomic) IBOutlet CroppableImageView *imageView;
-@property (weak, nonatomic) UIImage *image;
+@property (weak, nonatomic) IBOutlet CroppableImageView *croppableImageView;
+@property (strong, nonatomic) CroppableImage *croppableImage;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 

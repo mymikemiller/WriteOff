@@ -8,12 +8,17 @@
 
 #import "ImageCropViewController.h"
 #import "CroppableImageView.h"
+#import "CroppableImage.h"
 
-@implementation ImageCropViewController
+@implementation ImageCropViewController {
+    CroppableImage *_croppableImage;
+}
 @synthesize cancelButton;
 @synthesize doneButton;
 @synthesize delegate;
-@synthesize imageView;
+@synthesize croppableImageView;
+//@synthesize debugImageView;
+//@synthesize image = _image;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,16 +35,27 @@
 }
 - (IBAction)done:(id)sender
 {
-	[self.delegate imageCropViewControllerDidSave:self];
+    [self.delegate imageCropViewControllerDidSave:self];
 }
 
-- (void)setImage:(UIImage *)theImage {
+- (CroppableImage*)getCroppableImage
+{
+    return self.croppableImageView.croppableImage;
+}
+
+- (void)setCroppableImage:(CroppableImage *)theCroppableImage {
     NSLog(@"Setting image in ImageCropViewController");
-    [self.imageView setImage:theImage];
+    _croppableImage = theCroppableImage;
+    if (self.croppableImageView) {
+        self.croppableImageView.croppableImage = theCroppableImage;
+        //[self.debugImageView setImage:theImage];
+    } else {
+        NSLog(@"invalid imageView in ImageCropViewController, so can't set Image. Will wait until loaded.");
+    }
 }
 
-- (UIImage *)image {
-    return self.imageView.image;
+- (CroppableImage *)croppableImage {
+    return _croppableImage;
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,9 +80,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"viewDidLoad, so setting image");
-    
-    [self.imageView setImage:self.image];
+    NSLog(@"ImageCropViewController viewDidLoad, so setting image in view");
+    self.croppableImageView.croppableImage = _croppableImage;
 }
 
 
@@ -74,7 +89,7 @@
 {
     [self setCancelButton:nil];
     [self setDoneButton:nil];
-    [self setImageView:nil];
+    [self setCroppableImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

@@ -19,10 +19,20 @@
 		2732E53F153A2D540062F883 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2732E53E153A2D540062F883 /* Security.framework */; };
 		2732E541153A2D610062F883 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2732E540153A2D610062F883 /* SystemConfiguration.framework */; };
 		27397CFB157AF8D400181367 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */; };
+		273A5DE4158BBD2800D7C492 /* ManagedCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 273A5DE3158BBD2800D7C492 /* ManagedCALayer.m */; };
+		273A5DE6158BBF5400D7C492 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273A5DE5158BBF5400D7C492 /* QuartzCore.framework */; };
 		274BDA981581DF3100595D47 /* 86-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 274BDA971581DF3100595D47 /* 86-camera.png */; };
 		274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274BDA9A1581EFE400595D47 /* ImageCropViewController.m */; };
 		275D3E171582864700B78809 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D3E161582864700B78809 /* TransparentToolbar.m */; };
 		275D3E281582D6E300B78809 /* CroppableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D3E271582D6E300B78809 /* CroppableImageView.m */; };
+		277EEBBA15A7D4D500ED4BBD /* KeyboardAwareUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277EEBB815A7B55C00ED4BBD /* KeyboardAwareUIView.m */; };
+		277EEBBD15A82F9200ED4BBD /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 277EEBBC15A82F9200ED4BBD /* EditImageViewController.m */; };
+		2788E6EB15958B49008C49C0 /* UIImage+normalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788E6EA15958B49008C49C0 /* UIImage+normalize.m */; };
+		278A75A2159CF210004A0C51 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 278A75A1159CF210004A0C51 /* Settings.m */; };
+		278A75A9159D7A0D004A0C51 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278A75A8159D7A0D004A0C51 /* ImageCell.m */; };
+		278E34C015C23D5100BAEA2A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 278E34BF15C23D5100BAEA2A /* MBProgressHUD.m */; };
+		278E34C215C3BB0900BAEA2A /* Gear-64.png in Resources */ = {isa = PBXBuildFile; fileRef = 278E34C115C3BB0900BAEA2A /* Gear-64.png */; };
+		278E34C515C3BDA400BAEA2A /* ImageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278E34C415C3BDA400BAEA2A /* ImageSettingsViewController.m */; };
 		278F743D156F5E4600E20DA0 /* SpreadsheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */; };
 		278F7445156F5E5800E20DA0 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7444156F5E5800E20DA0 /* ImageManager.m */; };
 		278F7448156F601700E20DA0 /* GoogleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 278F7447156F601700E20DA0 /* GoogleManager.m */; };
@@ -30,6 +40,9 @@
 		278FBC3A15682DDF005B751F /* EditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278FBC3915682DDF005B751F /* EditableCell.m */; };
 		2790919F1554622200E16C75 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2790919D155461C000E16C75 /* AssetsLibrary.framework */; };
 		279093061555CC9100E16C75 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 279092FC1555CC2000E16C75 /* libGDataTouchStaticLib.a */; };
+		2790933E15A8F9F100712C78 /* CroppableImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790933D15A8F9F100712C78 /* CroppableImage.m */; };
+		27C11DE1159ED4FF003E6F69 /* UploadableImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C11DE0159ED4FF003E6F69 /* UploadableImage.m */; };
+		27CBAF7715A8D61A0000F9DE /* ImageCropCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CBAF7615A8D61A0000F9DE /* ImageCropCell.m */; };
 		27D74297153A7E5100B50997 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27D74296153A7E5100B50997 /* libxml2.dylib */; };
 		27D74A36153D336600B50997 /* notes in Resources */ = {isa = PBXBuildFile; fileRef = 27D74A35153D336600B50997 /* notes */; };
 /* End PBXBuildFile section */
@@ -97,6 +110,9 @@
 		2732E53E153A2D540062F883 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2732E540153A2D610062F883 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = "../gdata-objectivec-client-read-only/Source/OAuth2/Touch/GTMOAuth2ViewTouch.xib"; sourceTree = "<group>"; };
+		273A5DE2158BBD2800D7C492 /* ManagedCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagedCALayer.h; sourceTree = "<group>"; };
+		273A5DE3158BBD2800D7C492 /* ManagedCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManagedCALayer.m; sourceTree = "<group>"; };
+		273A5DE5158BBF5400D7C492 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		274BDA971581DF3100595D47 /* 86-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "86-camera.png"; sourceTree = "<group>"; };
 		274BDA991581EFE400595D47 /* ImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCropViewController.h; sourceTree = "<group>"; };
 		274BDA9A1581EFE400595D47 /* ImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropViewController.m; sourceTree = "<group>"; };
@@ -104,6 +120,21 @@
 		275D3E161582864700B78809 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		275D3E261582D6E300B78809 /* CroppableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CroppableImageView.h; sourceTree = "<group>"; };
 		275D3E271582D6E300B78809 /* CroppableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CroppableImageView.m; sourceTree = "<group>"; };
+		277EEBB715A7B55C00ED4BBD /* KeyboardAwareUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardAwareUIView.h; sourceTree = "<group>"; };
+		277EEBB815A7B55C00ED4BBD /* KeyboardAwareUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardAwareUIView.m; sourceTree = "<group>"; };
+		277EEBBB15A82F9200ED4BBD /* EditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
+		277EEBBC15A82F9200ED4BBD /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
+		2788E6E915958B49008C49C0 /* UIImage+normalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+normalize.h"; sourceTree = "<group>"; };
+		2788E6EA15958B49008C49C0 /* UIImage+normalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+normalize.m"; sourceTree = "<group>"; };
+		278A75A0159CF210004A0C51 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		278A75A1159CF210004A0C51 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		278A75A7159D7A0D004A0C51 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
+		278A75A8159D7A0D004A0C51 /* ImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
+		278E34BE15C23D5100BAEA2A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		278E34BF15C23D5100BAEA2A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		278E34C115C3BB0900BAEA2A /* Gear-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gear-64.png"; sourceTree = "<group>"; };
+		278E34C315C3BDA300BAEA2A /* ImageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSettingsViewController.h; sourceTree = "<group>"; };
+		278E34C415C3BDA400BAEA2A /* ImageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSettingsViewController.m; sourceTree = "<group>"; };
 		278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetManager.h; sourceTree = "<group>"; };
 		278F743C156F5E4600E20DA0 /* SpreadsheetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpreadsheetManager.m; sourceTree = "<group>"; };
 		278F7443156F5E5800E20DA0 /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
@@ -116,6 +147,8 @@
 		278FBC3915682DDF005B751F /* EditableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableCell.m; sourceTree = "<group>"; };
 		2790919D155461C000E16C75 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		279092ED1555CC2000E16C75 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = "../gdata-objectivec-client-read-only/Source/GData.xcodeproj"; sourceTree = "<group>"; };
+		2790933C15A8F9F100712C78 /* CroppableImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CroppableImage.h; path = ../CroppableImage.h; sourceTree = "<group>"; };
+		2790933D15A8F9F100712C78 /* CroppableImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CroppableImage.m; path = ../CroppableImage.m; sourceTree = "<group>"; };
 		279098E21555F1EE00E16C75 /* GData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GData.h; sourceTree = "<group>"; };
 		279098E31555F1EE00E16C75 /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACL.h; sourceTree = "<group>"; };
 		279098E41555F1EE00E16C75 /* GDataACLKeyedRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACLKeyedRole.h; sourceTree = "<group>"; };
@@ -433,6 +466,10 @@
 		27909A1C1555F1EE00E16C75 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
 		27909A1D1555F1EE00E16C75 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
 		27909A1E1555F1EE00E16C75 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		27C11DDF159ED4FF003E6F69 /* UploadableImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadableImage.h; sourceTree = "<group>"; };
+		27C11DE0159ED4FF003E6F69 /* UploadableImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadableImage.m; sourceTree = "<group>"; };
+		27CBAF7515A8D61A0000F9DE /* ImageCropCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCropCell.h; sourceTree = "<group>"; };
+		27CBAF7615A8D61A0000F9DE /* ImageCropCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropCell.m; sourceTree = "<group>"; };
 		27D74296153A7E5100B50997 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		27D749FC153A9A6D00B50997 /* NSArrayAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayAdditions.h; sourceTree = "<group>"; };
 		27D749FD153A9A6D00B50997 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
@@ -467,6 +504,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				273A5DE6158BBF5400D7C492 /* QuartzCore.framework in Frameworks */,
 				279093061555CC9100E16C75 /* libGDataTouchStaticLib.a in Frameworks */,
 				2790919F1554622200E16C75 /* AssetsLibrary.framework in Frameworks */,
 				27D74297153A7E5100B50997 /* libxml2.dylib in Frameworks */,
@@ -485,7 +523,9 @@
 		2732E4F3153A006C0062F883 = {
 			isa = PBXGroup;
 			children = (
+				273A5DE5158BBF5400D7C492 /* QuartzCore.framework */,
 				274BDA971581DF3100595D47 /* 86-camera.png */,
+				278E34C115C3BB0900BAEA2A /* Gear-64.png */,
 				27397CFA157AF8D400181367 /* GTMOAuth2ViewTouch.xib */,
 				279098E11555F1EE00E16C75 /* Headers */,
 				279092ED1555CC2000E16C75 /* GData.xcodeproj */,
@@ -525,16 +565,28 @@
 			children = (
 				278F7AC81573EFB500A0BFC9 /* SpreadsheetsViewController.h */,
 				278F7AC91573EFB500A0BFC9 /* SpreadsheetsViewController.m */,
+				278A75A0159CF210004A0C51 /* Settings.h */,
+				278A75A1159CF210004A0C51 /* Settings.m */,
 				2732E511153A006D0062F883 /* AppDelegate.h */,
 				2732E512153A006D0062F883 /* AppDelegate.m */,
 				2732E514153A006D0062F883 /* MainStoryboard_iPhone.storyboard */,
+				277EEBBB15A82F9200ED4BBD /* EditImageViewController.h */,
+				277EEBBC15A82F9200ED4BBD /* EditImageViewController.m */,
 				2732E51A153A006D0062F883 /* AddRowViewController.h */,
 				2732E51B153A006D0062F883 /* AddRowViewController.m */,
 				274BDA991581EFE400595D47 /* ImageCropViewController.h */,
 				274BDA9A1581EFE400595D47 /* ImageCropViewController.m */,
+				278E34C315C3BDA300BAEA2A /* ImageSettingsViewController.h */,
+				278E34C415C3BDA400BAEA2A /* ImageSettingsViewController.m */,
 				2732E509153A006D0062F883 /* Supporting Files */,
 				275D3E261582D6E300B78809 /* CroppableImageView.h */,
 				275D3E271582D6E300B78809 /* CroppableImageView.m */,
+				273A5DE2158BBD2800D7C492 /* ManagedCALayer.h */,
+				273A5DE3158BBD2800D7C492 /* ManagedCALayer.m */,
+				278A75A7159D7A0D004A0C51 /* ImageCell.h */,
+				278A75A8159D7A0D004A0C51 /* ImageCell.m */,
+				27CBAF7515A8D61A0000F9DE /* ImageCropCell.h */,
+				27CBAF7615A8D61A0000F9DE /* ImageCropCell.m */,
 				278FBC3815682DDF005B751F /* EditableCell.h */,
 				278FBC3915682DDF005B751F /* EditableCell.m */,
 				278F743B156F5E4600E20DA0 /* SpreadsheetManager.h */,
@@ -545,6 +597,16 @@
 				278F7447156F601700E20DA0 /* GoogleManager.m */,
 				275D3E151582864700B78809 /* TransparentToolbar.h */,
 				275D3E161582864700B78809 /* TransparentToolbar.m */,
+				278E34BE15C23D5100BAEA2A /* MBProgressHUD.h */,
+				278E34BF15C23D5100BAEA2A /* MBProgressHUD.m */,
+				2790933C15A8F9F100712C78 /* CroppableImage.h */,
+				2790933D15A8F9F100712C78 /* CroppableImage.m */,
+				27C11DDF159ED4FF003E6F69 /* UploadableImage.h */,
+				27C11DE0159ED4FF003E6F69 /* UploadableImage.m */,
+				2788E6E915958B49008C49C0 /* UIImage+normalize.h */,
+				2788E6EA15958B49008C49C0 /* UIImage+normalize.m */,
+				277EEBB715A7B55C00ED4BBD /* KeyboardAwareUIView.h */,
+				277EEBB815A7B55C00ED4BBD /* KeyboardAwareUIView.m */,
 			);
 			path = WriteOff;
 			sourceTree = "<group>";
@@ -1030,6 +1092,7 @@
 				27397CFB157AF8D400181367 /* GTMOAuth2ViewTouch.xib in Resources */,
 				27D74A36153D336600B50997 /* notes in Resources */,
 				274BDA981581DF3100595D47 /* 86-camera.png in Resources */,
+				278E34C215C3BB0900BAEA2A /* Gear-64.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,6 +1103,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				277EEBBA15A7D4D500ED4BBD /* KeyboardAwareUIView.m in Sources */,
 				2732E50F153A006D0062F883 /* main.m in Sources */,
 				2732E513153A006D0062F883 /* AppDelegate.m in Sources */,
 				2732E51C153A006D0062F883 /* AddRowViewController.m in Sources */,
@@ -1051,6 +1115,16 @@
 				274BDA9B1581EFE400595D47 /* ImageCropViewController.m in Sources */,
 				275D3E171582864700B78809 /* TransparentToolbar.m in Sources */,
 				275D3E281582D6E300B78809 /* CroppableImageView.m in Sources */,
+				273A5DE4158BBD2800D7C492 /* ManagedCALayer.m in Sources */,
+				2788E6EB15958B49008C49C0 /* UIImage+normalize.m in Sources */,
+				278A75A2159CF210004A0C51 /* Settings.m in Sources */,
+				278A75A9159D7A0D004A0C51 /* ImageCell.m in Sources */,
+				27C11DE1159ED4FF003E6F69 /* UploadableImage.m in Sources */,
+				277EEBBD15A82F9200ED4BBD /* EditImageViewController.m in Sources */,
+				27CBAF7715A8D61A0000F9DE /* ImageCropCell.m in Sources */,
+				2790933E15A8F9F100712C78 /* CroppableImage.m in Sources */,
+				278E34C015C23D5100BAEA2A /* MBProgressHUD.m in Sources */,
+				278E34C515C3BDA400BAEA2A /* ImageSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

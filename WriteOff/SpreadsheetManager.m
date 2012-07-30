@@ -21,7 +21,9 @@
 #import "GDataSpreadsheetCustomElement.h"
 #import "GDataFeedWorksheet.h"
 #import "GDataEntrySpreadsheet.h"
-
+#import "GDataServiceGoogleDocs.h"
+#import "GDataQueryDocs.h"
+#import "GDataLink.h"
 
 #import "AddRowViewController.h"
 
@@ -35,7 +37,14 @@
 @synthesize spreadsheet = _spreadsheet;
 @synthesize headerToValueMap = _headerToValueMap;
 @synthesize googleManager = _googleManager;
-@synthesize testing = _testing;
+@synthesize parentFolderLink;
+
+- (void)spreadsheetDocFetchTicket:(GDataServiceTicket *)ticket
+                 finishedWithFeed:(GDataFeedDocList *)feed
+                            error:(NSError *)error{
+    
+}
+
 
 - (id)initWithSpreadsheet:(GDataEntrySpreadsheetDoc *)theSpreadsheet
          andGoogleManager:(GoogleManager *)theGoogleManager
@@ -48,10 +57,107 @@
         self.spreadsheet = theSpreadsheet;
         self.googleManager = theGoogleManager;
         _headerToValueMap = [[NSMutableArray alloc] init];
+        
+        // Find the folder(s) the spreadsheet belongs to.
+        
+        /* This searches for a known folder
+         GDataServiceGoogleDocs *service = [googleManager docsService];
+         [service setAuthorizer:googleManager.auth];
+         GDataServiceTicket *ticket;
+         //This queries for a specific title
+         NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
+         GDataQueryDocs *query = [GDataQueryDocs
+         documentQueryWithFeedURL:feedURL];
+         [query setTitleQuery:@"testFolder"];
+         [query setIsTitleQueryExact:TRUE];
+         [query setMaxResults:1000];
+         [query setShouldShowFolders:YES];
+         [query setShouldShowFolders:YES];
+         ticket = [service fetchFeedWithQuery:query
+         delegate:self
+         didFinishSelector:@selector(folderFetchTicket:finishedWithFeed:error:)
+         ];*/
+        
+        GDataServiceGoogleDocs *service = [self.googleManager docsService];
+        GDataServiceTicket *ticket;
+        //This queries for a specific title
+        NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
+        GDataQueryDocs *query = [GDataQueryDocs
+                                 documentQueryWithFeedURL:feedURL];
+        [query setTitleQuery:[[self.spreadsheet title] stringValue]];
+        [query setIsTitleQueryExact:TRUE];
+        [query setMaxResults:1000];
+        [query setShouldShowFolders:NO];
+        ticket = [service fetchFeedWithQuery:query completionHandler:^(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error) {
+            
+            NSLog(@"FOUND DOC");
+            
+            //folderFeed = feed;
+            
+            for (GDataEntryDocBase *doc in feed.entries) {        
+                NSString *displayStr = [NSString stringWithFormat:@"%@",
+                                        [[doc title] stringValue]];
+                NSLog(@"found: %@", displayStr);
+                NSLog(@"Does this doc match?");
+                NSLog(@"  spreadsheet: %@", self.spreadsheet.HTMLLink.href);
+                NSLog(@"          doc: %@", doc.HTMLLink.href);
+                
+                NSString *spreadsheetHref = self.spreadsheet.HTMLLink.href;
+                NSString *docHref = doc.HTMLLink.href;
+                NSString *spreadsheetID;
+                NSString *docID;
+                
+                NSRange range = [spreadsheetHref rangeOfString:@"=" options:NSBackwardsSearch];
+                spreadsheetID = (range.location != NSNotFound) ?
+                [spreadsheetHref substringFromIndex:(1 + range.location)] :
+                spreadsheetHref;
+                
+                range = [docHref rangeOfString:@"=" options:NSBackwardsSearch];
+                docID = (range.location != NSNotFound) ?
+                [docHref substringFromIndex:(1 + range.location)] :
+                docHref;
+                
+                NSLog(@"Found spreadsheetID %@", spreadsheetID);
+                NSLog(@"Found         docID %@", docID);
+                
+                if (![docID isEqualToString:spreadsheetID]) {
+                    // We found a doc that happens to have the same name. Skip it.
+                    NSLog(@"Skipping");
+                    continue;
+                }
+                
+                NSLog(@"Found match");
+                
+                
+                NSArray *parentLinks = [doc parentLinks];
+                NSLog(@"Number of parentLinks: %i", parentLinks.count);
+                for (GDataLink *item in parentLinks) {
+                    NSLog(@"Got an item: %@", item);
+                    
+                    // Only items with titles are valid folders
+                    if ([item title]) {
+                        NSLog(@"FOUND FOLDER: %@", [item title]);
+                        self.parentFolderLink = item;
+                        
+                        NSLog(@"href: %@", [item href]);
+                        
+                        // Only use the first folder. We may eventually want to give the user the choice of which folder to use.
+                        return;
+                    }
+                }
+            }
+        }];
+        /*ticket = [service fetchFeedWithQuery:query
+                                    delegate:self
+                           didFinishSelector:@selector(spreadsheetDocFetchTicket:finishedWithFeed:error:)
+                  ];
+        */
+
     }
     
     return self;
 }
+
 
 - (void)fetchHeaders:(SEL)fetchedSelector
 notifyObjectWhenDone:(UIViewController *)objectToNotify {
@@ -74,6 +180,28 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
     }
 }
 
+- (void)uploadToGoogle:(SEL)spreadsheetUploadedSelector
+  notifyObjectWhenDone:(UIViewController *)objectToNotify {
+    
+    mSpreadsheetUploadedSelector = spreadsheetUploadedSelector;
+    mObjectToNotifyWhenSpreadsheetUploaded = objectToNotify;
+    
+    // This works to fetch the list feed, which we may not need to do to be able to post. seems like all we use from that is [[list postLink] URL]
+     //NSURL *feedURL = [worksheet listFeedURL]; //or could use [[worksheet cellsLink] URL]; for individual cells
+     //cellFeedURL = feedURL;// [[feed postLink] URL];
+     
+     //if (feedURL) {
+    NSLog(@"SpreadsheetManager attempting to upload.");
+     
+     GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
+     [service fetchFeedWithURL:mListFeedURL
+     delegate:self
+     didFinishSelector:@selector(listTicket:finishedWithFeed:error:)];
+     
+     
+
+}
+
 // get a spreadsheet service object with the current username/password
 //
 // A "service" object handles networking tasks.  Service objects
@@ -93,6 +221,10 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
     }
     
     return service;
+}
+
+- (NSString *)spreadsheetTitle {
+    return [NSString stringWithFormat:@"%@", [[self.spreadsheet title] stringValue]];
 }
 
 // fetch worksheet feed callback
@@ -118,19 +250,6 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
             didFinishSelector:@selector(cellsTicket:finishedWithFeed:error:)];
 
     
-    /* This works to fetch the list feed, which we may not need to do to be able to post. seems like all we use from that is [[list postLink] URL]
-     NSURL *feedURL = [worksheet listFeedURL]; //or could use [[worksheet cellsLink] URL]; for individual cells
-     cellFeedURL = feedURL;// [[feed postLink] URL];
-     
-     if (feedURL) {
-     
-     GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
-     [service fetchFeedWithURL:feedURL
-     delegate:self
-     didFinishSelector:@selector(listTicket:finishedWithFeed:error:)];
-     }
-     */
-
 }
 
 - (void)listTicket:(GDataServiceTicket *)ticket
@@ -219,27 +338,17 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
                     NSLog(@"Done with header. Breaking");
                     break;
                 }
-                NSMutableArray *headerToValue = [NSMutableArray arrayWithObjects:[cell inputString], @"DEBUG_TEXT", nil];
-                [_headerToValueMap addObject:headerToValue];
+                NSMutableArray *headerToValue = [NSMutableArray arrayWithObjects:[cell inputString], @"", nil];
+                // I should be able to do this, but it doesn't work: 
+                //[_headerToValueMap addObject:headerToValue];
+                
+                NSMutableArray *m = [self mutableArrayValueForKey:@"headerToValueMap"];
+                [m addObject:headerToValue];
             }
         }
     }
-    
-    NSLog(@"Notifying object that we fetched cells. This might be where the crash is.");
-    if (mObjectToNotifyWhenHeadersFetched) {
-        NSLog(@"AddRow page exists");
-    } else {
-        NSLog(@"AddRow page doesn't exist!");
-    }
-    
+        
     // Only notify the view if it's visible.
-    
-    if (mObjectToNotifyWhenHeadersFetched == nil) {
-        NSLog(@"nil");
-    } else {
-        NSLog(@"not nil");
-    }
-    
     if (mObjectToNotifyWhenHeadersFetched.isViewLoaded && mObjectToNotifyWhenHeadersFetched.view.window) {
         NSLog(@"View is loaded, so notifying");
         [mObjectToNotifyWhenHeadersFetched performSelector:mFetchedSelector];
@@ -259,8 +368,8 @@ notifyObjectWhenDone:(UIViewController *)objectToNotify {
         NSLog(@"Error updating spreadsheet: %@", error);
     } else {
         NSLog(@"Updated spreadsheet!");
+        [mObjectToNotifyWhenSpreadsheetUploaded performSelector:mSpreadsheetUploadedSelector];
     }
-    
 }
 
 

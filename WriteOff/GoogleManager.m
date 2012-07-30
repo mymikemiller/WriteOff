@@ -261,6 +261,59 @@ didFinishSignInSelector:(SEL)finishedSignInSelector
     return service;
 }
 
+// docList list fetch callback
+- (void)spreadsheetsFetchTicket:(GDataServiceTicket *)ticket
+               finishedWithFeed:(GDataFeedDocList *)feed
+                          error:(NSError *)error{
+    
+    NSLog(@"Got feed!");
+    if (error) {
+        NSLog(@"...but got an error :(");
+        NSLog(@"%@",[error localizedDescription]);
+        NSLog(@"%@", error);
+    }
+    
+    // Cache the feed
+    mDocListFeed = feed;
+    
+    
+    self.spreadsheets = [NSMutableArray array];
+    
+    for (GDataEntryBase *doc in feed.entries) {        
+        NSString *displayStr = [NSString stringWithFormat:@"%@",
+                                [[doc title] stringValue]];
+        
+        
+        /*NSArray *parentLinks = [doc parentLinks];        
+        NSLog(@"Loading all spreadsheets, number of parentLinks: %i", parentLinks.count);
+        for (id item in parentLinks) {
+            NSLog(@"Got an item: %@", item);
+        }*/
+
+        
+        GDataEntrySpreadsheet *spreadsheet = (GDataEntrySpreadsheet *)doc;
+        if (spreadsheet) {
+            NSLog(@"Found doc %@", displayStr);
+            // This should work. I should be able to do this, but it doesn't work... [(NSMutableArray *)_spreadsheets addObject:spreadsheet];
+            NSMutableArray *s = [self mutableArrayValueForKey:@"spreadsheets"];
+            [s addObject:spreadsheet];
+
+            NSURL *url = [[spreadsheet spreadsheetLink] URL];
+            NSLog(@"  spreadsheetLink: %@", [url absoluteString]);
+            url = [[spreadsheet selfLink] URL];
+            NSLog(@"  selfLink: %@", [url absoluteString]);
+            url = [[spreadsheet feedLink] URL];
+            NSLog(@"  feedLink: %@", [url absoluteString]);
+            url = [[spreadsheet HTMLLink] URL];
+            NSLog(@"  HTMLLink: %@", [url absoluteString]);
+            
+        }
+    }
+    
+    // Notify our owner that we finished fetching
+    [mOwner performSelector:mDidFetchSelector];
+    
+} 
 
 // begin retrieving the list of the user's docs
 - (void)fetchSpreadsheets:(SEL)fetchedSelector {
@@ -316,17 +369,39 @@ didFinishSignInSelector:(SEL)finishedSignInSelector
     
     // update our metadata entry for this user
     //[self fetchMetadataEntry];
-    
 }
 
 
-
-// docList list fetch callback
-- (void)spreadsheetsFetchTicket:(GDataServiceTicket *)ticket
-          finishedWithFeed:(GDataFeedDocList *)feed
-                     error:(NSError *)error{
+//delete this
+/*
+- (void)refetchTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(GDataFeedDocList *)feed
+                    error:(NSError *)error{
     
-    NSLog(@"Got feed!");
+    
+    NSLog(@"REFETCHED DOC");
+    
+    
+    for (GDataEntryDocBase *doc in feed.entries) {        
+        NSString *displayStr = [NSString stringWithFormat:@"%@",
+                                [[doc title] stringValue]];
+        NSLog(@"found: %@", displayStr);
+        
+        NSArray *parentLinks = [doc parentLinks];        
+        NSLog(@"refetched parentLinks: %i", parentLinks.count);
+        for (id item in parentLinks) {
+            NSLog(@"Got an item: %@", item);
+        }
+    }
+        
+}*/
+
+// single doc fetch callback
+- (void)singleSpreadsheetFetchTicket:(GDataServiceTicket *)ticket
+                    finishedWithSpreadsheet:(GDataEntrySpreadsheet *)spreadsheet
+                               error:(NSError *)error{
+    
+    NSLog(@"Got single spreadsheet feed!");
     if (error) {
         NSLog(@"...but got an error :(");
         NSLog(@"%@",[error localizedDescription]);
@@ -334,27 +409,125 @@ didFinishSignInSelector:(SEL)finishedSignInSelector
     }
     
     // Cache the feed
-    mDocListFeed = feed;
-    
+    //mDocListFeed = feed;
     
     self.spreadsheets = [NSMutableArray array];
-    
-    for (GDataEntryDocBase *doc in feed.entries) {        
+    if (spreadsheet) {
         NSString *displayStr = [NSString stringWithFormat:@"%@",
-                                [[doc title] stringValue]];
+                                [[spreadsheet title] stringValue]];
+        NSLog(@"Found doc %@", displayStr);
         
-        GDataEntrySpreadsheet *spreadsheet = (GDataEntrySpreadsheet *)doc;
-        if (spreadsheet) {
-            NSLog(@"Found doc %@", displayStr);
-            // This should work. I should be able to do this, but it doesn't work... [(NSMutableArray *)_spreadsheets addObject:spreadsheet];
-            [_spreadsheets addObject:spreadsheet];
+        NSArray *links = [spreadsheet links];
+        NSLog(@"Number of links: %i", links.count);
+        for (id item in links) {
+            NSLog(@"Got an item: %@", item);
         }
+        /*
+        // fetch it again but as a GDataEntryDoc to get the parent list. mikem: moved this into SpreadsheetManager
+        GDataServiceGoogleDocs *service = [self docsService];
+        [service setAuthorizer:self.auth];
+        GDataServiceTicket *ticket;           
+        // This queries for a specific title
+        NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
+        GDataQueryDocs *query = [GDataQueryDocs
+        documentQueryWithFeedURL:feedURL];
+        //[query set
+        [query setFeedURL:[spreadsheet.selfLink URL]];
+        //[query setTitleQuery:[[spreadsheet title] stringValue]];
+        //[query setIsTitleQueryExact:TRUE];
+        [query setMaxResults:1000];
+        [query setShouldShowFolders:NO];
+        
+        
+        NSString *userName = [service username];
+        NSArray *categories = [spreadsheet categories];
+        // See if there's an intervening folder.
+        NSString *folderScheme = [kGDataNamespaceDocuments
+                                  stringByAppendingFormat:@"/folders/%@",
+                                  userName];
+        NSLog(@"folder scheme: %@", folderScheme);
+        NSArray *folders = [GDataCategory categoriesWithScheme:folderScheme
+                                                fromCategories:categories];
+        if (folders) {
+            NSLog(@"Found %i folders", folders.count);
+        } else {
+            NSLog(@"no folders");
+        }
+        if (folders && [folders count]) {
+            NSString *label = [[folders objectAtIndex:0] label];
+            NSLog(@"  %@", label);
+        }
+        */
+             /*              
+        NSLog(@"Refetching feed");   ////mikem: refetching feed doesn't work. i need to find the right url to use. it works when searhing by name.
+        
+        ticket = [service fetchFeedWithURL:[spreadsheet.selfLink URL] delegate:self didFinishSelector:@selector(refetchTicket:finishedWithFeed:error:)];
+        */
+        //ticket = [service fetchFeedWithQuery:query
+        //delegate:self
+        //didFinishSelector:@selector(refetchTicket:finishedWithFeed:error:)
+        //];
+        
+        
+        /*
+        GDataEntrySpreadsheetDoc *doc = spreadsheet;
+        NSArray *parentLinks = [doc parentLinks];
+        NSLog(@"Number of parentLinks: %i", parentLinks.count);
+        for (id item in parentLinks) {
+            NSLog(@"Got an item: %@", item);
+        }
+        NSArray *parentHrefs = [parentLinks valueForKey:@"href"];
+        NSLog(@"Number of parentHrefs: %i", parentHrefs.count);
+        for (id item in parentHrefs) {
+            NSLog(@"Got an item: %@", item);
+        }
+        */
+        // This should work. I should be able to do this, but it doesn't work... [(NSMutableArray *)_spreadsheets addObject:spreadsheet];
+        NSMutableArray *s = [self mutableArrayValueForKey:@"spreadsheets"];
+        [s addObject:spreadsheet];
     }
     
     // Notify our owner that we finished fetching
     [mOwner performSelector:mDidFetchSelector];
+}
+
+
+// begin retrieving the list of the user's docs
+- (void)fetchSingleSpreadsheet:(NSURL *)url 
+               fetchedSelector:(SEL)fetched {
     
-} 
+    if ([self.auth canAuthorize]) {
+        NSLog(@"Can authorize");
+    } else {
+        NSLog(@"Cannot authorize");
+    }
+    
+    GDataServiceGoogleDocs *service = [self docsService];
+    [service setAuthorizer:self.auth];
+    GDataServiceTicket *ticket;
+    mDidFetchSelector = fetched; 
+
+    NSLog(@"Fetching feed at url %@", url);
+    ticket = [service fetchFeedWithURL:url 
+                              delegate:self 
+                     didFinishSelector:@selector(singleSpreadsheetFetchTicket:finishedWithSpreadsheet:error:)];
+    
+    /*ticket = [service fetchFeedWithQuery:query
+    delegate:self
+    didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)
+    ];*/
+     
+     
+    /* this fetches all spreadsheets
+    NSURL *feedURL = [NSURL URLWithString:kGDataGoogleSpreadsheetsPrivateFullFeed];
+    ticket = [service fetchFeedWithURL:feedURL
+                              delegate:self
+                     didFinishSelector:@selector(spreadsheetsFetchTicket:finishedWithFeed:error:)];
+     */
+}
+
+
+
 
 
 

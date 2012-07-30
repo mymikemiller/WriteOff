@@ -11,10 +11,13 @@
 #import "GDataEntrySpreadsheet.h"
 #import "GDataEntrySpreadsheetDoc.h"
 #import "GTMOAuth2Authentication.h"
+#import "CroppableImage.h"
 
 #import <AssetsLibrary/ALAssetRepresentation.h>
 #import <AssetsLibrary/ALAsset.h>
 
+#import "Settings.h"
+#import "ImageManager.h"
 
 @implementation SpreadsheetsViewController
 
@@ -35,6 +38,11 @@
     NSLog(@"Did fetch spreadsheets!!!");
     [self.tableView reloadData];
 }
+- (void)spreadsheetFetched {
+    NSLog(@"Did fetch single spreadsheet!!!");
+    [self.tableView reloadData];
+    [self performSegueWithIdentifier:@"PickSpreadsheet" sender:self];
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -44,8 +52,15 @@
         segue.destinationViewController;
 		//addRowViewController.delegate = self;
         
-        UITableViewCell *selectedCell = (UITableViewCell *)sender;
-        NSInteger selectedIndex = selectedCell.tag;
+
+        // If we didn't select a cell but we're trying segue, just select the first spreadsheet (this happens when we fetched a single spreadsheet, in which case that spreadsheet will be the first in the array)
+        // Why doesn't this work? Casting sender below into a UITableViewCell* should invalidate the pointer when the type is a SpreadsheetsViewController (self) as is sent from spreadsheetFetched and I shouldn't have to use isKindOfClass. But the pointer doesn't evaluate to false and we try to get the tag and it fails: NSInteger selectedIndex = selectedCell ? selectedCell.tag : 0;
+        
+        NSInteger selectedIndex = 0;
+        if ([sender isKindOfClass:[UITableViewCell class]]) {
+            UITableViewCell *selectedCell = (UITableViewCell *)sender;
+            selectedIndex = selectedCell.tag;
+        }
         
         GDataEntrySpreadsheetDoc *spreadsheet = [googleManager.spreadsheets objectAtIndex:selectedIndex];
         //GDataEntrySpreadsheet *s = (GDataEntrySpreadsheet *)spreadsheet;
@@ -58,8 +73,13 @@
                                                   andGoogleManager:self.googleManager];
         
 		addRowViewController.spreadsheetManager = spreadsheetManager;
-        NSLog(@"Setting googleManager on AddRowViewController");
         addRowViewController.googleManager = self.googleManager;
+        
+        // Save the selected spreadsheet so we can automatically load it next time
+        Settings *settings = [Settings instance];
+        settings.mostRecentSpreadsheetURL = spreadsheet.selfLink.URL;
+        [settings save]; //move this so it's automatic when setting
+        
 	} else if ([segue.identifier isEqualToString:@"DebugCropImage"])
 	{
         NSLog(@"Preparing for debug segue to Image Crop!");
@@ -80,10 +100,9 @@
             
             if (iref) {
                 NSLog(@"Image loaded. setting.");
-                UIImage *largeimage = [UIImage imageWithCGImage:iref];
+                UIImage *largeimage = [ImageManager makeResizedImage:[UIImage imageWithCGImage:iref] withNewLargestDimension:600 andQuality:kCGInterpolationHigh];
                 //[largeimage retain];
-                imageCropViewController.image = largeimage;
-                
+                imageCropViewController.croppableImage = [CroppableImage croppableImageWithImage:largeimage];
             }
         };
         
@@ -152,14 +171,41 @@
 }
 
 - (void)didSignIn {
+    NSLog(@"Signed in! Loading spreadsheet.");
+    if (![self loadSingleSpreadsheetFromSettings]) {
+        NSLog(@"No spreadsheet saved in settings; loading all");
+        [self loadAllSpreadsheets];
+    }
+}
+
+- (void)loadAllSpreadsheets {
     if (googleManager.auth.canAuthorize) {
-        NSLog(@"Signed in! Loading spreadsheets");
         [googleManager fetchSpreadsheets:@selector(spreadsheetsFetched)];
     } else {
         NSLog(@"Can't authorize, so not loading spreadsheets");
     }
 }
-    
+- (bool)loadSingleSpreadsheetFromSettings {
+    if (googleManager.auth.canAuthorize) {
+        Settings *settings = [Settings instance];
+        [settings load]; //move this to make it automatic...
+        
+        NSURL *url = settings.mostRecentSpreadsheetURL; //[NSURL URLWithString:@"https://spreadsheets.google.com/feeds/spreadsheets/private/full/ts2O1C66JYwufMmm1IbVgRw"]; //selfLink
+        
+        if (url) {
+            NSLog(@"Found url from settings, loading spreadsheet %@", url);
+            [googleManager fetchSingleSpreadsheet:url fetchedSelector:@selector(spreadsheetFetched)];
+            return true;
+        } else {
+            NSLog(@"No url stored in settings");
+            return false;
+        }
+    } else {
+        NSLog(@"Can't authorize, so not loading spreadsheet");
+        return false;
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -170,12 +216,15 @@
     NSLog(@"viewDidAppear");
     if (!googleManager.auth.canAuthorize) {
         NSLog(@"View did appear, so signing in");
-        //[googleManager signIn:self didFinishSignInSelector:@selector(didSignIn)];
+        [googleManager signIn:self didFinishSignInSelector:@selector(didSignIn)];
         
-        NSLog(@"Launching photo page");
-        [self performSegueWithIdentifier:@"DebugCropImage" sender:self];
-        
-        
+        //NSLog(@"Launching photo page");
+        //[self performSegueWithIdentifier:@"DebugCropImage" sender:self];
+    } else {
+        // Already signed in, but might not have the full list of spreadsheets (if we loaded a single spreadsheet after signing in initially)
+        if (googleManager.spreadsheets.count <= 1) { // We should also provide a way to refresh the list in case the user only had 1 doc and then added more.
+            [self loadAllSpreadsheets];
+        }
     }
 }
 

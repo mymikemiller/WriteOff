@@ -15,6 +15,7 @@
 @class GDataServiceGoogleSpreadsheet;
 @class GoogleManager;
 @class AddRowViewController;
+@class GDataLink;
 
 @interface SpreadsheetManager : NSObject
 {
@@ -27,6 +28,8 @@
     
     SEL mFetchedSelector;
     UIViewController *mObjectToNotifyWhenHeadersFetched;
+    SEL mSpreadsheetUploadedSelector;
+    UIViewController *mObjectToNotifyWhenSpreadsheetUploaded;
 }
 
 - (id)initWithSpreadsheet:(GDataEntrySpreadsheetDoc *)theSpreadsheet
@@ -34,12 +37,17 @@
 - (void)fetchHeaders:(SEL)fetchedSelector
         notifyObjectWhenDone:(UIViewController *)objectToNotify;
 
+- (void)uploadToGoogle:(SEL)spreadsheetUploadedSelector
+   notifyObjectWhenDone:(UIViewController *)objectToNotify;
+
 - (GDataServiceGoogleSpreadsheet *)spreadsheetService;
+
+- (NSString *)spreadsheetTitle;
 
 @property (nonatomic, strong) GDataEntrySpreadsheetDoc *spreadsheet;
 @property (nonatomic, strong) GoogleManager *googleManager;
+@property (nonatomic, strong) GDataLink *parentFolderLink;
 @property (nonatomic, copy) NSArray *headerToValueMap; // See mHeaderToValueMap
 
-@property (nonatomic, copy) NSSet *testing;
 
 @end

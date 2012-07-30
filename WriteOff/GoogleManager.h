@@ -38,6 +38,8 @@ didFinishSignInSelector:(SEL)finishedSignInSelector;
 
 
 - (void)fetchSpreadsheets: (SEL)fetchedSelector;
+- (void)fetchSingleSpreadsheet:(NSURL *)url 
+               fetchedSelector:(SEL)fetched;
 
 - (BOOL)shouldSaveInKeychain;
 

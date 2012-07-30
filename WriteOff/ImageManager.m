@@ -6,154 +6,61 @@
 //  Copyright (c) 2012 Mike Miller. All rights reserved.
 //
 
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 #import "ImageManager.h"
 
 #import "GDataEntryStandardDoc.h"
+#import "GDataEntrySpreadsheetDoc.h"
 #import "GDataServiceGoogleDocs.h"
 #import "GDataQueryDocs.h"
 #import "GoogleManager.h"
+#import "SpreadsheetManager.h"
+#import "Settings.h"
+
+
+#import "GDataEntryFolderDoc.h" //can probably remove this
 
 #import "GTMOAuth2Authentication.h"
+#import "UIImage+normalize.h"
 
 @implementation ImageManager
 
-@synthesize image = _image;
-@synthesize googleManager = _googleManager;
+@synthesize uploadableImage = _uploadableImage;
+@synthesize spreadsheetManager = _spreadsheetManager;
 
 
-- (id)initWithImage:(UIImage *)theImage
-   andGoogleManager:(GoogleManager *)theGoogleManager
+- (id)initWithImage:(UploadableImage *)theImage
+   andSpreadsheetManager:(SpreadsheetManager *)theSpreadsheetManager
 {
     self = [super init];
     if (self) {        
-        self.image = theImage;
-        self.googleManager = theGoogleManager;
+        self.uploadableImage = theImage;
+        self.spreadsheetManager = theSpreadsheetManager;
+        mPreviousNumberOfBytesUploaded = 0;
     }
     return self;
 }
 
-//http://blog.logichigh.com/2008/06/05/uiimage-fix/
-- (UIImage *)scaleAndRotateImage:(UIImage *)theImage
-{  
-    int kMaxResolution = 320; // Or whatever  
-    
-    CGImageRef imgRef = theImage.CGImage;  
-    
-    CGFloat width = CGImageGetWidth(imgRef);  
-    CGFloat height = CGImageGetHeight(imgRef);  
-    
-    CGAffineTransform transform = CGAffineTransformIdentity;  
-    CGRect bounds = CGRectMake(0, 0, width, height);  
-    if (width > kMaxResolution || height > kMaxResolution) {  
-        CGFloat ratio = width/height;  
-        if (ratio > 1) {  
-            bounds.size.width = kMaxResolution;  
-            bounds.size.height = bounds.size.width / ratio;  
-        }  
-        else {  
-            bounds.size.height = kMaxResolution;  
-            bounds.size.width = bounds.size.height * ratio;  
-        }  
-    }  
-    
-    CGFloat scaleRatio = bounds.size.width / width;  
-    CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));  
-    CGFloat boundHeight;  
-    UIImageOrientation orient = theImage.imageOrientation;
-    switch(orient) {  
-            
-        case UIImageOrientationUp: //EXIF = 1  
-            NSLog(@"image orientation: up");
-            transform = CGAffineTransformIdentity;  
-            break;  
-            
-        case UIImageOrientationUpMirrored: //EXIF = 2  
-            transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);  
-            transform = CGAffineTransformScale(transform, -1.0, 1.0);  
-            break;  
-            
-        case UIImageOrientationDown: //EXIF = 3  
-            NSLog(@"image orientation: down");
-            transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);  
-            transform = CGAffineTransformRotate(transform, M_PI);  
-            break;  
-            
-        case UIImageOrientationDownMirrored: //EXIF = 4  
-            transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);  
-            transform = CGAffineTransformScale(transform, 1.0, -1.0);  
-            break;  
-            
-        case UIImageOrientationLeftMirrored: //EXIF = 5  
-            boundHeight = bounds.size.height;  
-            bounds.size.height = bounds.size.width;  
-            bounds.size.width = boundHeight;  
-            transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width);  
-            transform = CGAffineTransformScale(transform, -1.0, 1.0);  
-            transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);  
-            break;  
-            
-        case UIImageOrientationLeft: //EXIF = 6 
-            NSLog(@"image orientation: Left"); 
-            boundHeight = bounds.size.height;  
-            bounds.size.height = bounds.size.width;  
-            bounds.size.width = boundHeight;  
-            transform = CGAffineTransformMakeTranslation(0.0, imageSize.width);  
-            transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);  
-            break;  
-            
-        case UIImageOrientationRightMirrored: //EXIF = 7  
-            boundHeight = bounds.size.height;  
-            bounds.size.height = bounds.size.width;  
-            bounds.size.width = boundHeight;  
-            transform = CGAffineTransformMakeScale(-1.0, 1.0);  
-            transform = CGAffineTransformRotate(transform, M_PI / 2.0);  
-            break;  
-            
-        case UIImageOrientationRight: //EXIF = 8  
-            NSLog(@"image orientation: right");
-            boundHeight = bounds.size.height;  
-            bounds.size.height = bounds.size.width;  
-            bounds.size.width = boundHeight;  
-            transform = CGAffineTransformMakeTranslation(imageSize.height, 0.0);  
-            transform = CGAffineTransformRotate(transform, M_PI / 2.0);  
-            break;  
-            
-        default:  
-            [NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];  
-            
-    }  
-    
-    UIGraphicsBeginImageContext(bounds.size);  
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();  
-    
-    if (orient == UIImageOrientationRight || orient == UIImageOrientationLeft) {  
-        CGContextScaleCTM(context, -scaleRatio, scaleRatio);  
-        CGContextTranslateCTM(context, -height, 0);  
-    }  
-    else {  
-        CGContextScaleCTM(context, scaleRatio, -scaleRatio);  
-        CGContextTranslateCTM(context, 0, -height);  
-    }  
-    
-    CGContextConcatCTM(context, transform);  
-    
-    CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);  
-    UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();  
-    UIGraphicsEndImageContext();  
-    
-    return imageCopy;
-}  
-
 // This code came from here: http://www.iphonedevsdk.com/forum/iphone-sdk-development/5204-resize-image-high-quality.html
 // Returns a rescaled copy of the image; its imageOrientation will be UIImageOrientationUp
 // If the new size is not integral, it will be rounded up
-- (UIImage *)makeResizedImage:(CGSize)newSize quality:(CGInterpolationQuality)interpolationQuality {
-    CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
++ (UIImage *)makeResizedImage:(UIImage *)image 
+      withNewLargestDimension:(int)newLargestDimension
+                   andQuality:(CGInterpolationQuality)interpolationQuality
+{
+    UIImage *theImage = [image rotated]; // re-orients the image to match the exif data (the orientation of the phone when the picture was taken) so it appears rightside up.
     
-    UIImage *theImage = [self scaleAndRotateImage:self.image]; // re-orients the image to match the exif data (the orientation of the phone when the picture was taken) so it appears rightside up.
+    CGRect newRect;
+    if (theImage.size.width > theImage.size.height) {
+        newRect = CGRectIntegral(CGRectMake(0, 0, newLargestDimension, newLargestDimension * theImage.size.height / theImage.size.width));
+    } else {
+        newRect = CGRectIntegral(CGRectMake(0, 0, newLargestDimension * theImage.size.width / theImage.size.height, newLargestDimension));
+    }
+    
+    NSLog(@"RESIZING IMAGE TO KEEP LARGEST DIMENSION AT %i GIVES NEW SIZE: %@", newLargestDimension, NSStringFromCGRect(newRect));
+    
     CGImageRef imageRef = theImage.CGImage;
-    
     // Compute the bytes per row of the new image
     size_t bytesPerRow = CGImageGetBitsPerPixel(imageRef) / CGImageGetBitsPerComponent(imageRef) * newRect.size.width;
     bytesPerRow = (bytesPerRow + 15) & ~15;  // Make it 16-byte aligned
@@ -183,10 +90,17 @@
     return resizedImage;
 }
 
-- (void)uploadFile {
+
+
+- (void)uploadFile:(SEL)uploadedSelector
+    notifyObject:(AddRowViewController *)objectToNotify
+{
+    
+    mUploadedSelector = uploadedSelector;
+    mObjectToNotifyWhenUploaded = objectToNotify;
     
     // this function came from here: http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m
-    NSString *errorMsg = nil;
+    //NSString *errorMsg = nil;
     
     // make a new entry for the file
     
@@ -196,42 +110,57 @@
     
     GDataEntryDocBase *newEntry = [entryClass documentEntry];
     
-    NSString *title = @"Test image title";
+    NSString *title = [self.uploadableImage getFinalName];
     [newEntry setTitleWithString:title];
     
-    CGSize newSize = CGSizeMake(self.image.size.width / 10, self.image.size.height / 10);
-    UIImage *resizedImage = [self makeResizedImage:newSize quality:kCGInterpolationHigh];
-    NSData *photoData = UIImageJPEGRepresentation(resizedImage, 0.6); // jpeg quality and size setting should be user-controlled
-    [newEntry setUploadData:photoData]; 
+    [newEntry setUploadData:[self.uploadableImage getJPEGRepresentation]]; 
+    
+    //NSLog(@"Upload length: %i", [photoData length]);
         
     // This would also probably work:
     //[newEntry setUploadLocationURL:(the url from chosen photo)]
     
     [newEntry setUploadMIMEType:mimeType];
-    [newEntry setUploadSlug:@"testImage.jpg"];
+    //[newEntry setUploadSlug:@"testImage.jpg"];
     
-    NSURL *uploadURL = [GDataServiceGoogleDocs docsUploadURL];
+    //GDataEntrySpreadsheetDoc *spreadsheet = self.spreadsheetManager.spreadsheet;
     
-    // add the OCR or translation parameters, if the user set the pop-up
-    // button appropriately
+    NSURL *uploadURL;
+    if (self.spreadsheetManager.parentFolderLink) {
+        NSString *link = self.spreadsheetManager.parentFolderLink.href;
+        // The link is in the format:      https://docs.google.com/feeds/default/private/full/folder%XXX
+        // We need it to be in the format: https://docs.google.com/feeds/upload/create-session/default/private/full/folder%XXX/contents
+        
+        NSString *folderID;
+        NSRange range = [link rangeOfString:@"%" options:NSBackwardsSearch];
+        if (range.location != NSNotFound) {
+            folderID = [link substringFromIndex:(1 + range.location)];
+        }
+        
+        NSLog(@"FOLDER ID: %@", folderID);
+        
+        uploadURL = [NSURL URLWithString:[@"https://docs.google.com/feeds/upload/create-session/default/private/full/folder%" stringByAppendingFormat:@"%@%@", folderID, @"/contents"]];
+        NSLog(@"UPLOAD URL: %@", uploadURL);
+        
+        
+        //               https://docs.google.com/feeds/default/private/full/folder%3A0BxJZgQVaVOYPNjRkMmI4OTUtNGM4Yy00ZGM0LTk2MGMtY2YwYmQzYWViNTAw
+        //need link like https://docs.google.com/feeds/upload/create-session/default/private/full/folder%3A0BxJZgQVaVOYPUksySmE5aFFqTUE/contents?convert=false
+    }
+    
+    // If we couldn't get the parent folder for any reason (most likely because the spreadsheet isn't in a folder; it's in the root feed), upload to the root
+    if (!uploadURL) {
+        uploadURL = [GDataServiceGoogleDocs docsUploadURL];
+    }
     
     GDataQueryDocs *query = [GDataQueryDocs queryWithFeedURL:uploadURL];
-    
     [query setShouldConvertUpload:NO];
     [query setShouldOCRUpload:NO];
-    
-    // we'll leave out the sourceLanguage parameter to get
-    // auto-detection of the file's language
-    //
-    // language codes: http://www.loc.gov/standards/iso639-2/php/code_list.php
-    //[query setTargetLanguage:targetLanguage];
-    
     uploadURL = [query URL];
+    
     NSLog(@"uploadURL: %@", uploadURL);
-    
-    
+
     // make service tickets call back into our upload progress selector
-    GDataServiceGoogleDocs *service = [self.googleManager docsService];
+    GDataServiceGoogleDocs *service = [self.spreadsheetManager.googleManager docsService];
     
     //NSLog(@"CanAuthorize: %@", [[self.googleManager auth] canAuthorize]);
     
@@ -245,6 +174,7 @@
                                       forFeedURL:uploadURL
                                         delegate:self
                                didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
+    //ticket.userData = folderFeed; //save the folder so we know what folder it needs to be placed in after it's uploaded.
     
     [ticket setUploadProgressHandler:^(GDataServiceTicketBase *ticket, unsigned long long numberOfBytesRead, unsigned long long dataLength) {
         // progress callback
@@ -256,21 +186,31 @@
          */
 
         NSLog(@"Upload at %llu of %llu, (%i%%)", numberOfBytesRead, dataLength, (int)floor(((double)numberOfBytesRead / (double)dataLength) * 100));
+        
+        [mObjectToNotifyWhenUploaded imageUploadProgressUpdate:(numberOfBytesRead - mPreviousNumberOfBytesUploaded)];
+        mPreviousNumberOfBytesUploaded = numberOfBytesRead;
+        
+        if (numberOfBytesRead == dataLength) {
+            NSLog(@"Uploaded all data, but the upload isn't quite finished");
+            [mObjectToNotifyWhenUploaded allDataForImageUploaded];
+        }
     }];
     
     NSError *e = [ticket fetchError];
-    NSLog(@"%@", e);
+    if (e) {
+        NSLog(@"%@", e);
+    }
     
     // we turned automatic retry on when we allocated the service, but we
     // could also turn it on just for this ticket
     
     //[self setUploadTicket:ticket];
     
-    if (errorMsg) {
+    /*if (errorMsg) {
         // we're currently in the middle of the file selection sheet, so defer our
         // error sheet
         NSLog(@"Had upload error :( %@", errorMsg);
-    }
+    }*/
     
     NSLog(@"Submitted upload ticket");
     
@@ -291,8 +231,43 @@
         
         // tell the user that the add worked
         NSLog(@"File uploaded!! %@", [[entry title] stringValue]);
+        NSLog(@"HTML link to image:%@", [[entry HTMLLink] URL]);
+        self.uploadableImage.url = [[entry HTMLLink] URL];
+        [mObjectToNotifyWhenUploaded performSelector:mUploadedSelector withObject:self.uploadableImage];
         
-        NSLog(@"HTML link to image:%@", [entry HTMLLink]);
+        mPreviousNumberOfBytesUploaded = 0;
+        
+        
+        
+        
+        //Now set the folder. can probably do this when uploading instead.
+        // This came from http://gdata-objectivec-client.googlecode.com/svn/trunk/Examples/DocsSample/DocsSampleWindowController.m
+        // the selected menu item represents a folder; fetch the folder's feed
+        //
+        // with the folder's feed, we can insert or remove the selected document
+        // entry in the folder's feed
+        /*
+        GDataFeedDocList *folderFeed = ticket.userData;
+        NSLog(@"folderFeed URL: %@", [[folderFeed selfLink] URL]);
+        GDataEntryFolderDoc *folderEntry = [folderFeed.entries objectAtIndex:0];
+        NSURL *folderFeedURL = [[folderEntry content] sourceURL];
+        NSLog(@"folder's content sourceURL: %@", folderFeedURL);
+        if (folderFeedURL != nil) {
+            
+            GDataServiceGoogleDocs *service = self.spreadsheetManager.googleManager.docsService;
+            
+            GDataServiceTicket *ticket;
+            NSLog(@"fetching folder feed.");
+            ticket = [service fetchFeedWithURL:folderFeedURL
+                                      delegate:self
+                             didFinishSelector:@selector(fetchFolderTicket:finishedWithFeed:error:)];
+            
+            // save the selected doc in the ticket's userData
+            GDataEntryDocBase *doc = entry;
+            [ticket setUserData:doc];
+        } else {
+            NSLog(@"null feed url");
+        }*/
         
         
     } else {

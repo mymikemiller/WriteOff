@@ -7,22 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UploadableImage.h"
+#import "AddRowViewController.h"
+
+#import "GDataFeedDocList.h"
 
 @class GoogleManager;
+@class SpreadsheetManager;
 
 @interface ImageManager : NSObject
 {
-    
+    SEL mUploadedSelector;
+    AddRowViewController *mObjectToNotifyWhenUploaded;
+    unsigned long long mPreviousNumberOfBytesUploaded;
 }
 
-@property (nonatomic, retain) UIImage *image;
-@property (nonatomic, strong) GoogleManager *googleManager;
+@property (nonatomic, retain) UploadableImage *uploadableImage;
+@property (nonatomic, strong) SpreadsheetManager *spreadsheetManager;
 
 
-- (id)initWithImage:(UIImage *)theImage
-   andGoogleManager:(GoogleManager *)googleManager;
+- (id)initWithImage:(UploadableImage *)theImage
+    andSpreadsheetManager:(SpreadsheetManager *)spreadsheetManager;
 
++ (UIImage *)makeResizedImage:(UIImage *)image 
+      withNewLargestDimension:(int)newLargestDimension
+                   andQuality:(CGInterpolationQuality)interpolationQuality;
 
-- (void)uploadFile;
+- (void)uploadFile:(SEL)uploadedSelector
+      notifyObject:(AddRowViewController *)objectToNotify;
 
 @end

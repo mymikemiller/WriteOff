@@ -9,13 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "GoogleManager.h"
 #import "AddRowViewController.h"
+#import "ImageCropViewController.h"
 
 @interface SpreadsheetsViewController : UITableViewController <ImageCropViewControllerDelegate>
-
+{
+    
+}
 
 @property (nonatomic, strong) GoogleManager *googleManager;
 
 
 - (void)spreadsheetsFetched;
+- (void)spreadsheetFetched;
+
+- (void)loadAllSpreadsheets;
+- (bool)loadSingleSpreadsheetFromSettings;
 
 @end
